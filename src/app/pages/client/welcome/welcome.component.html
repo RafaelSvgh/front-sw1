@@ -1,50 +1,131 @@
-<section class="min-h-screen flex flex-col bg-gradient-to-r bg-gray-200">
+<section class="min-h-screen flex flex-col bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-500 relative overflow-hidden">
+  <!-- Animated background elements -->
+  <div class="absolute inset-0 opacity-10">
+    <div class="absolute top-20 left-10 w-16 h-16 bg-yellow-400 rounded-lg animate-bounce" style="animation-delay: 0s;"></div>
+    <div class="absolute top-40 right-20 w-12 h-12 bg-pink-400 rounded-full animate-ping" style="animation-delay: 1s;"></div>
+    <div class="absolute bottom-32 left-16 w-20 h-20 bg-green-400 rounded-lg animate-bounce" style="animation-delay: 2s;"></div>
+    <div class="absolute bottom-20 right-12 w-8 h-8 bg-blue-400 rounded-full animate-ping" style="animation-delay: 1.5s;"></div>
+    <div class="absolute top-1/2 left-1/4 w-6 h-6 bg-purple-400 rounded-lg animate-spin" style="animation-duration: 4s;"></div>
+    <div class="absolute top-1/3 right-1/3 w-10 h-10 bg-cyan-400 rounded-full animate-pulse" style="animation-delay: 0.5s;"></div>
+  </div>
+
+  <!-- Page Builder Elements Animation -->
+  <div class="absolute top-10 left-1/2 transform -translate-x-1/2 opacity-20">
+    <div class="flex space-x-2 animate-pulse">
+      <div class="w-4 h-4 bg-white rounded" style="animation-delay: 0s;"></div>
+      <div class="w-8 h-4 bg-white rounded" style="animation-delay: 0.3s;"></div>
+      <div class="w-6 h-4 bg-white rounded" style="animation-delay: 0.6s;"></div>
+    </div>
+  </div>
+
   <!-- Encabezado -->
-  <header class="bg-graygreen-800 shadow w-full py-4 px-8 flex justify-end">
+  <header class="bg-gradient-to-r from-indigo-900 via-purple-900 to-pink-900 shadow-2xl w-full py-6 px-8 flex justify-between items-center relative z-10 backdrop-blur-sm">
+    <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-2">
+        <div class="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center animate-pulse">
+          <span class="text-white font-bold text-sm">🏗️</span>
+        </div>
+        <h1 class="text-xl font-bold bg-gradient-to-r from-yellow-400 to-pink-400 bg-clip-text text-transparent">
+          Page Builder Studio
+        </h1>
+      </div>
+    </div>
     <div class="flex items-center space-x-4">
       <button (click)="logout()"
-        class="px-4 py-2 text-sm font-semibold text-white bg-red-800 rounded-md hover:bg-gray-200 hover:text-gray-900">
+        class="px-4 py-2 text-sm font-semibold text-white bg-red-800 rounded-md hover:bg-gray-200 hover:text-gray-900 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
         Finalizar sesión
       </button>
     </div>
   </header>
 
-  <<!-- Contenido principal -->
-    <div class="flex flex-col items-center justify-center lg:flex-col">
-      <!-- Crear Sala arriba -->
-      <div class="bg-white rounded-lg shadow-lg p-8 m-4 w-auto lg:w-1/3">
-        <h2 class="text-xl font-bold mb-6 text-center">Crear una Sala</h2>
-        <form (ngSubmit)="createRoom()" class="space-y-4">
-          <div>
-            <label for="roomName" class="block text-sm font-medium text-gray-700">Nombre de la Sala</label>
-            <input [(ngModel)]="roomName" name="roomName" type="text" id="roomName" placeholder="Nombre de la sala"
-              class="mt-1 block w-full p-2.5 border border-gray-300 rounded-md" />
+  <!-- Contenido principal -->
+  <div class="flex-1 flex flex-col items-center justify-center lg:flex-col relative z-10 py-8">
+    <!-- Welcome Message -->
+    <div class="text-center mb-8">
+      <h2 class="text-4xl font-bold mb-4 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent animate-pulse">
+        ¡Bienvenido al Constructor de Páginas!
+      </h2>
+      <p class="text-lg text-white/80 mb-6">
+        Crea o únete a una sala para comenzar a construir páginas web increíbles
+      </p>
+      
+      <!-- Page Builder Animation -->
+      <div class="flex justify-center mb-8">
+        <div class="relative">
+          <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6 shadow-2xl border border-white/30">
+            <div class="grid grid-cols-3 gap-2 mb-4">
+              <div class="h-3 bg-gradient-to-r from-purple-400 to-blue-400 rounded animate-pulse" style="animation-delay: 0s;"></div>
+              <div class="h-3 bg-gradient-to-r from-blue-400 to-cyan-400 rounded animate-pulse" style="animation-delay: 0.3s;"></div>
+              <div class="h-3 bg-gradient-to-r from-cyan-400 to-purple-400 rounded animate-pulse" style="animation-delay: 0.6s;"></div>
+            </div>
+            <div class="h-8 bg-gradient-to-r from-yellow-400 to-orange-400 rounded mb-2 animate-pulse" style="animation-delay: 0.9s;"></div>
+            <div class="grid grid-cols-2 gap-2">
+              <div class="h-4 bg-gradient-to-r from-green-400 to-blue-400 rounded animate-pulse" style="animation-delay: 1.2s;"></div>
+              <div class="h-4 bg-gradient-to-r from-pink-400 to-purple-400 rounded animate-pulse" style="animation-delay: 1.5s;"></div>
+            </div>
           </div>
-          <button type="submit"
-            class="w-full bg-slate-700 text-white font-medium rounded-lg py-2.5 text-center hover:bg-slate-800 focus:outline-none">
-            Crear Sala
-          </button>
-        </form>
-      </div>
-
-      <!-- Unirse a Sala abajo -->
-      <div class="bg-white rounded-lg shadow-lg p-8 m-4 w-auto lg:w-1/3">
-        <h2 class="text-xl font-bold mb-6 text-center">Ingresar a una Sala</h2>
-        <form (ngSubmit)="joinRoom()" class="space-y-4">
-          <div>
-            <label for="roomCode" class="block text-sm font-medium text-gray-700">Código de la Sala</label>
-            <input [(ngModel)]="roomCode" name="roomCode" type="text" id="roomCode" placeholder="Código de la sala"
-              class="mt-1 block w-full p-2.5 border border-gray-300 rounded-md" />
+          <div class="absolute -top-2 -right-2 animate-bounce">
+            <span class="text-2xl">🎨</span>
           </div>
-          <button type="submit"
-            class="w-full bg-emerald-600 text-white font-medium rounded-lg py-2.5 text-center hover:bg-green-700 focus:outline-none">
-            Ingresar a Sala
-          </button>
-        </form>
+          <div class="absolute -bottom-2 -left-2 animate-spin" style="animation-duration: 3s;">
+            <span class="text-xl">⚙️</span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div>
-
+    <!-- Crear Sala arriba -->
+    <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 m-4 w-auto lg:w-1/3 border border-white/20 transform hover:scale-105 transition-all duration-300 hover:shadow-3xl">
+      <div class="flex items-center justify-center mb-6">
+        <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-500 rounded-xl flex items-center justify-center mr-3 animate-pulse">
+          <span class="text-white text-xl">🏗️</span>
+        </div>
+        <h2 class="text-xl font-bold text-center bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Crear una Sala</h2>
+      </div>
+      <form (ngSubmit)="createRoom()" class="space-y-4">
+        <div class="transform transition-all duration-300 hover:scale-105">
+          <label for="roomName" class="block text-sm font-medium text-gray-700 mb-2">Nombre de la Sala</label>
+          <input [(ngModel)]="roomName" name="roomName" type="text" id="roomName" placeholder="Nombre de la sala"
+            class="mt-1 block w-full p-2.5 border border-gray-300 rounded-md bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200 focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring-2 transition-all duration-300 placeholder-gray-400" />
+        </div>
+        <button type="submit"
+          class="w-full bg-slate-700 text-white font-medium rounded-lg py-2.5 text-center hover:bg-slate-800 focus:outline-none bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-xl transform hover:-translate-y-1 active:translate-y-0 transition-all duration-300">
+          🚀 Crear Sala
+        </button>
+      </form>
     </div>
+
+    <!-- Unirse a Sala abajo -->
+    <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 m-4 w-auto lg:w-1/3 border border-white/20 transform hover:scale-105 transition-all duration-300 hover:shadow-3xl">
+      <div class="flex items-center justify-center mb-6">
+        <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-cyan-500 rounded-xl flex items-center justify-center mr-3 animate-pulse">
+          <span class="text-white text-xl">🔗</span>
+        </div>
+        <h2 class="text-xl font-bold text-center bg-gradient-to-r from-green-600 to-cyan-600 bg-clip-text text-transparent">Ingresar a una Sala</h2>
+      </div>
+      <form (ngSubmit)="joinRoom()" class="space-y-4">
+        <div class="transform transition-all duration-300 hover:scale-105">
+          <label for="roomCode" class="block text-sm font-medium text-gray-700 mb-2">Código de la Sala</label>
+          <input [(ngModel)]="roomCode" name="roomCode" type="text" id="roomCode" placeholder="Código de la sala"
+            class="mt-1 block w-full p-2.5 border border-gray-300 rounded-md bg-gradient-to-r from-green-50 to-cyan-50 border-green-200 focus:border-green-400 focus:ring-green-300 focus:outline-none focus:ring-2 transition-all duration-300 placeholder-gray-400" />
+        </div>
+        <button type="submit"
+          class="w-full bg-emerald-600 text-white font-medium rounded-lg py-2.5 text-center hover:bg-green-700 focus:outline-none bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-700 hover:to-cyan-700 shadow-lg hover:shadow-xl transform hover:-translate-y-1 active:translate-y-0 transition-all duration-300">
+          🎯 Ingresar a Sala
+        </button>
+      </form>
+    </div>
+
+    <!-- Building Animation Footer -->
+    <div class="mt-8 flex items-center space-x-4 opacity-60">
+      <div class="flex space-x-1">
+        <div class="w-2 h-8 bg-white rounded animate-pulse" style="animation-delay: 0s;"></div>
+        <div class="w-2 h-6 bg-white rounded animate-pulse" style="animation-delay: 0.2s;"></div>
+        <div class="w-2 h-10 bg-white rounded animate-pulse" style="animation-delay: 0.4s;"></div>
+        <div class="w-2 h-4 bg-white rounded animate-pulse" style="animation-delay: 0.6s;"></div>
+        <div class="w-2 h-7 bg-white rounded animate-pulse" style="animation-delay: 0.8s;"></div>
+      </div>
+      <span class="text-white text-sm font-medium">Construyendo el futuro digital...</span>
+    </div>
+  </div>
 </section>
