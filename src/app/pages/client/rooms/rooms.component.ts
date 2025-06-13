@@ -2470,8 +2470,50 @@ export class RoomsComponent implements OnInit {
     if (input.files && input.files.length > 0) {
       this.selectedImage = input.files[0];
       this.imagePrompt = '';
-      this.showImageModal = true;
+      // this.showImageModal = true;
+      // this.makeHttpRequest2(this.imagePrompt);
+      this.sendImageToBackend();
     }
+  }
+
+  makeHttpRequest2(promptText: string) {
+    const body = { question: promptText };
+    this.http.post('http://localhost:5000/query', body).subscribe({
+      next: (response: any) => {
+        try {
+          const components = JSON.parse(response.response);
+          const pageId = this.pages[this.currentPantalla].id;
+  
+          this.sokectService.clearPage(this.roomCode, pageId);
+  
+          setTimeout(() => {
+            components.forEach((component: any, index: number) => {
+              const componentWithNewId = {
+                ...component,
+                id: uuidv4()
+              };
+  
+              setTimeout(() => {
+                this.sokectService.addCanvasComponent(this.roomCode, pageId, componentWithNewId);
+              }, index * 100);
+            });
+          }, 200);
+  
+          this.showResponseModal = true;
+          this.httpResponse = `Diseño cargado exitosamente - ${components.length} componentes agregados`;
+          console.log('🤖 Componentes de IA cargados:', components.length, 'elementos');
+          console.log('🧹 Pantalla limpiada y nuevos componentes agregados');
+  
+        } catch (error) {
+          this.httpResponse = "Error al procesar la respuesta: " + error;
+          this.showResponseModal = true;
+        }
+      },
+      error: (error) => {
+        this.httpResponse = error;
+        this.showResponseModal = true;
+      }
+    });
   }
 
   sendImageToBackend() {
@@ -2484,8 +2526,9 @@ export class RoomsComponent implements OnInit {
     this.http.post<any>('http://localhost:5000/analyze-image', formData).subscribe({
       next: (response) => {
         this.httpResponse = response.response;
-        this.showResponseModal = true;
+        // this.showResponseModal = true;
         this.showImageModal = false;
+        this.makeHttpRequest2(response.response);
       },
       error: (error) => {
         this.httpResponse = error.error?.error || 'Error al analizar la imagen';
