@@ -2420,7 +2420,8 @@ export class RoomsComponent implements OnInit {
 
   makeHttpRequest() {
     const body = { question: this.questionText };
-    this.http.post('http://localhost:5000/query', body).subscribe({
+    // this.http.post('http://localhost:5000/query', body).subscribe({
+    this.http.post('https://v9k5scrk-5000.brs.devtunnels.ms/query', body).subscribe({
       next: (response: any) => {
         try {
           // Parsear la respuesta y asignarla a jsonEjemplo
@@ -2478,7 +2479,8 @@ export class RoomsComponent implements OnInit {
 
   makeHttpRequest2(promptText: string) {
     const body = { question: promptText };
-    this.http.post('http://localhost:5000/query', body).subscribe({
+    // this.http.post('http://localhost:5000/query', body).subscribe({
+    this.http.post('https://v9k5scrk-5000.brs.devtunnels.ms/query', body).subscribe({
       next: (response: any) => {
         try {
           const components = JSON.parse(response.response);
@@ -2523,7 +2525,8 @@ export class RoomsComponent implements OnInit {
     formData.append('image', this.selectedImage);
     formData.append('prompt', this.imagePrompt || 'Describe la imagen');
 
-    this.http.post<any>('http://localhost:5000/analyze-image', formData).subscribe({
+    // this.http.post<any>('http://localhost:5000/analyze-image', formData).subscribe({
+    this.http.post<any>('https://v9k5scrk-5000.brs.devtunnels.ms/analyze-image', formData).subscribe({
       next: (response) => {
         this.httpResponse = response.response;
         // this.showResponseModal = true;
