@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   OnInit,
+  OnDestroy,
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -136,7 +137,7 @@ interface ContextMenu {
   templateUrl: './rooms.component.html',
   styleUrls: ['./rooms.component.css'],
 })
-export class RoomsComponent implements OnInit {
+export class RoomsComponent implements OnInit, OnDestroy {
   @ViewChild('canvas', { static: false })
   canvasRef!: ElementRef<HTMLDivElement>;
 
@@ -183,6 +184,13 @@ export class RoomsComponent implements OnInit {
   imagePrompt: string = '';
   showImageModal: boolean = false;
 
+  // Variables para grabación de audio
+  isRecording: boolean = false;
+  isProcessingAudio: boolean = false;
+  mediaRecorder: MediaRecorder | null = null;
+  audioChunks: Blob[] = [];
+  recognition: any = null;
+
   //Find de instancias
   constructor(
     private route: ActivatedRoute,
@@ -197,6 +205,7 @@ export class RoomsComponent implements OnInit {
   errorMessage: string = '';
   usersInRoom: any[] = [];
   showParticipants: boolean = false;
+  
   ngOnInit(): void {
     this.roomCode = this.route.snapshot.paramMap.get('code') || '';
 
@@ -2420,8 +2429,8 @@ export class RoomsComponent implements OnInit {
 
   makeHttpRequest() {
     const body = { question: this.questionText };
-    // this.http.post('http://localhost:5000/query', body).subscribe({
-    this.http.post('https://v9k5scrk-5000.brs.devtunnels.ms/query', body).subscribe({
+    this.http.post('http://localhost:5000/query', body).subscribe({
+    //this.http.post('https://v9k5scrk-5000.brs.devtunnels.ms/query', body).subscribe({
       next: (response: any) => {
         try {
           // Parsear la respuesta y asignarla a jsonEjemplo
@@ -2479,8 +2488,8 @@ export class RoomsComponent implements OnInit {
 
   makeHttpRequest2(promptText: string) {
     const body = { question: promptText };
-    // this.http.post('http://localhost:5000/query', body).subscribe({
-    this.http.post('https://v9k5scrk-5000.brs.devtunnels.ms/query', body).subscribe({
+    this.http.post('http://localhost:5000/query', body).subscribe({
+    //this.http.post('https://v9k5scrk-5000.brs.devtunnels.ms/query', body).subscribe({
       next: (response: any) => {
         try {
           const components = JSON.parse(response.response);
@@ -2525,8 +2534,8 @@ export class RoomsComponent implements OnInit {
     formData.append('image', this.selectedImage);
     formData.append('prompt', this.imagePrompt || 'Describe la imagen');
 
-    // this.http.post<any>('http://localhost:5000/analyze-image', formData).subscribe({
-    this.http.post<any>('https://v9k5scrk-5000.brs.devtunnels.ms/analyze-image', formData).subscribe({
+    this.http.post<any>('http://localhost:5000/analyze-image', formData).subscribe({
+    //this.http.post<any>('https://v9k5scrk-5000.brs.devtunnels.ms/analyze-image', formData).subscribe({
       next: (response) => {
         this.httpResponse = response.response;
         // this.showResponseModal = true;
@@ -2550,4 +2559,94 @@ export class RoomsComponent implements OnInit {
     this.showQuestionModal = false;
     this.questionText = '';
   }
+
+  // Método para alternar grabación
+  toggleRecording(): void {
+    if (this.isRecording) {
+      this.stopRecording();
+    } else {
+      this.startRecording();
+    }
+  }
+
+  // Iniciar grabación
+  async startRecording(): Promise<void> {
+    try {
+      // Verificar soporte del navegador
+      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        alert('Tu navegador no soporta reconocimiento de voz. Usa Chrome o Edge.');
+        return;
+      }
+
+      // Configurar reconocimiento de voz
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      this.recognition = new SpeechRecognition();
+      
+      this.recognition.continuous = true;
+      this.recognition.interimResults = true;
+      this.recognition.lang = 'es-ES'; // Español
+      
+      let finalTranscript = '';
+      
+      this.recognition.onresult = (event: any) => {
+        let interimTranscript = '';
+        
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const transcript = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            finalTranscript += transcript + ' ';
+          } else {
+            interimTranscript += transcript;
+          }
+        }
+        
+        // Actualizar el textarea con el texto transcrito
+        this.questionText = finalTranscript + interimTranscript;
+        this.cdr.detectChanges();
+      };
+      
+      this.recognition.onerror = (event: any) => {
+        console.error('Error en reconocimiento de voz:', event.error);
+        this.stopRecording();
+        alert('Error en el reconocimiento de voz: ' + event.error);
+      };
+      
+      this.recognition.onend = () => {
+        this.isRecording = false;
+        this.isProcessingAudio = false;
+        this.cdr.detectChanges();
+      };
+      
+      // Iniciar reconocimiento
+      this.recognition.start();
+      this.isRecording = true;
+      
+    } catch (error) {
+      console.error('Error al iniciar grabación:', error);
+      alert('Error al acceder al micrófono. Verifica los permisos.');
+    }
+  }
+
+  // Detener grabación
+  stopRecording(): void {
+    if (this.recognition) {
+      this.recognition.stop();
+    }
+    this.isRecording = false;
+    this.isProcessingAudio = true;
+    
+    // Simular procesamiento
+    setTimeout(() => {
+      this.isProcessingAudio = false;
+      this.cdr.detectChanges();
+    }, 1000);
+  }
+
+  // Limpiar recursos al destruir el componente
+  ngOnDestroy(): void {
+    if (this.recognition) {
+      this.recognition.stop();
+    }
+  }
+
 }

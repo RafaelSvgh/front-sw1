@@ -1070,19 +1070,49 @@
         placeholder="Describe el diseño que necesitas..."
       ></textarea>
     </div>
-    <div class="flex justify-end gap-2">
+    
+    <!-- Indicador de grabación -->
+    <div *ngIf="isRecording" class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2">
+      <div class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+      <span class="text-red-700 font-medium">Grabando audio... Habla ahora</span>
+    </div>
+    
+    <div class="flex justify-between items-center">
+      <!-- Botón de micrófono -->
       <button
-        class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-        (click)="showQuestionModal = false"
+        class="px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300"
+        [ngClass]="{
+          'bg-red-500 text-white hover:bg-red-600': isRecording,
+          'bg-blue-500 text-white hover:bg-blue-600': !isRecording
+        }"
+        (click)="toggleRecording()"
+        [disabled]="isProcessingAudio"
       >
-        Cancelar
+        <span *ngIf="!isRecording && !isProcessingAudio">🎤</span>
+        <span *ngIf="isRecording">⏹️</span>
+        <span *ngIf="isProcessingAudio">⏳</span>
+        <span>
+          {{ isRecording ? 'Detener grabación' : 
+             isProcessingAudio ? 'Procesando...' : 
+             'Consulta por audio' }}
+        </span>
       </button>
-      <button
-        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        (click)="submitQuestion()"
-      >
-        Enviar
-      </button>
+      
+      <!-- Botones originales -->
+      <div class="flex gap-2">
+        <button
+          class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+          (click)="showQuestionModal = false"
+        >
+          Cancelar
+        </button>
+        <button
+          class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          (click)="submitQuestion()"
+        >
+          Enviar
+        </button>
+      </div>
     </div>
   </div>
 </div>
