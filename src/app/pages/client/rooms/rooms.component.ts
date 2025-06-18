@@ -199,6 +199,9 @@ export class RoomsComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     private http: HttpClient
   ) { }
+  ngOnDestroy(): void {
+    throw new Error('Method not implemented.');
+  }
   roomCode: string = '';
   roomName: string = '';
   roomId: number = 0;
