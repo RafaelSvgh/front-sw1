@@ -1379,7 +1379,7 @@ export class RoomsComponent implements OnInit {
 
   // ——— MÉTODOS AUXILIARES PARA FLEXBOX ———————————————————————————————————————
 
-  /* Método para obtener justify-content del contenedor padre en este caso por mas 
+  /* Método para obtener justify-content del contenedor padre en este caso por mas
   que el padre este aliniado en cualquier posicion, sus hijos siempre estaran en el centro */
   getFlexJustifyContent(comp: CanvasComponent): string {
     if (!comp.alignment) return 'center'; // default
@@ -2301,7 +2301,7 @@ export class RoomsComponent implements OnInit {
   }
   //fin border
   downloadAngularProject() {
-    const url = `http://localhost:3000/api/export/flutter/${this.roomCode}`;
+    const url = `https://back-sw1.onrender.com/api/export/flutter/${this.roomCode}`;
     window.open(url, '_blank'); // Abre la descarga del zip en otra pestaña
   }
 
@@ -2420,19 +2420,19 @@ export class RoomsComponent implements OnInit {
 
   makeHttpRequest() {
     const body = { question: this.questionText };
-    // this.http.post('http://localhost:5000/query', body).subscribe({
-    this.http.post('https://v9k5scrk-5000.brs.devtunnels.ms/query', body).subscribe({
+    this.http.post('https://b808-189-28-75-16.ngrok-free.app/query', body).subscribe({
+    // this.http.post('https://v9k5scrk-5000.brs.devtunnels.ms/query', body).subscribe({
       next: (response: any) => {
         try {
           // Parsear la respuesta y asignarla a jsonEjemplo
           const components = JSON.parse(response.response);
-          
+
           // Obtener el ID de la página actual
           const pageId = this.pages[this.currentPantalla].id;
-          
+
           // 🧹 PASO 1: Limpiar la pantalla actual usando socket service
           this.sokectService.clearPage(this.roomCode, pageId);
-          
+
           // 🎯 PASO 2: Agregar nuevos componentes después de un pequeño delay
           // para asegurar que la limpieza se complete primero
           setTimeout(() => {
@@ -2442,7 +2442,7 @@ export class RoomsComponent implements OnInit {
                 ...component,
                 id: uuidv4()
               };
-              
+
               // Agregar con un pequeño delay para evitar conflictos
               setTimeout(() => {
                 this.sokectService.addCanvasComponent(this.roomCode, pageId, componentWithNewId);
@@ -2453,7 +2453,7 @@ export class RoomsComponent implements OnInit {
           this.httpResponse = `Diseño cargado exitosamente - ${components.length} componentes agregados`;
           console.log('🤖 Componentes de IA cargados:', components.length, 'elementos');
           console.log('🧹 Pantalla limpiada y nuevos componentes agregados');
-          
+
         } catch (error) {
           this.httpResponse = "Error al procesar la respuesta: " + error;
           this.showResponseModal = true;
@@ -2479,33 +2479,33 @@ export class RoomsComponent implements OnInit {
 
   makeHttpRequest2(promptText: string) {
     const body = { question: promptText };
-    // this.http.post('http://localhost:5000/query', body).subscribe({
-    this.http.post('https://v9k5scrk-5000.brs.devtunnels.ms/query', body).subscribe({
+    this.http.post('https://b808-189-28-75-16.ngrok-free.app/query', body).subscribe({
+    // this.http.post('https://v9k5scrk-5000.brs.devtunnels.ms/query', body).subscribe({
       next: (response: any) => {
         try {
           const components = JSON.parse(response.response);
           const pageId = this.pages[this.currentPantalla].id;
-  
+
           this.sokectService.clearPage(this.roomCode, pageId);
-  
+
           setTimeout(() => {
             components.forEach((component: any, index: number) => {
               const componentWithNewId = {
                 ...component,
                 id: uuidv4()
               };
-  
+
               setTimeout(() => {
                 this.sokectService.addCanvasComponent(this.roomCode, pageId, componentWithNewId);
               }, index * 100);
             });
           }, 200);
-  
+
           this.showResponseModal = true;
           this.httpResponse = `Diseño cargado exitosamente - ${components.length} componentes agregados`;
           console.log('🤖 Componentes de IA cargados:', components.length, 'elementos');
           console.log('🧹 Pantalla limpiada y nuevos componentes agregados');
-  
+
         } catch (error) {
           this.httpResponse = "Error al procesar la respuesta: " + error;
           this.showResponseModal = true;
@@ -2525,8 +2525,8 @@ export class RoomsComponent implements OnInit {
     formData.append('image', this.selectedImage);
     formData.append('prompt', this.imagePrompt || 'Describe la imagen');
 
-    // this.http.post<any>('http://localhost:5000/analyze-image', formData).subscribe({
-    this.http.post<any>('https://v9k5scrk-5000.brs.devtunnels.ms/analyze-image', formData).subscribe({
+    this.http.post<any>('https://b808-189-28-75-16.ngrok-free.app/analyze-image', formData).subscribe({
+    // this.http.post<any>('https://v9k5scrk-5000.brs.devtunnels.ms/analyze-image', formData).subscribe({
       next: (response) => {
         this.httpResponse = response.response;
         // this.showResponseModal = true;

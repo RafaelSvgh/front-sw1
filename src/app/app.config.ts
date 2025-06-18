@@ -6,7 +6,7 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { ApiService } from './services/api.service';
 import { authInterceptor } from './interceptors/auth.interceptor';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
-const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
+const config: SocketIoConfig = { url: 'https://back-sw1.onrender.com', options: {} };
 // https://back-sw1.onrender.com/
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection(
