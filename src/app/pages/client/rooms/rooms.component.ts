@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   OnInit,
+  OnDestroy,
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -136,7 +137,7 @@ interface ContextMenu {
   templateUrl: './rooms.component.html',
   styleUrls: ['./rooms.component.css'],
 })
-export class RoomsComponent implements OnInit {
+export class RoomsComponent implements OnInit, OnDestroy {
   @ViewChild('canvas', { static: false })
   canvasRef!: ElementRef<HTMLDivElement>;
 
@@ -182,6 +183,13 @@ export class RoomsComponent implements OnInit {
   selectedImage: File | null = null;
   imagePrompt: string = '';
   showImageModal: boolean = false;
+
+  // Variables para grabación de audio
+  isRecording: boolean = false;
+  isProcessingAudio: boolean = false;
+  mediaRecorder: MediaRecorder | null = null;
+  audioChunks: Blob[] = [];
+  recognition: any = null;
 
   //Find de instancias
   constructor(
