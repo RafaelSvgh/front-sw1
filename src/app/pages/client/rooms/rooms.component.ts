@@ -2561,4 +2561,51 @@ export class RoomsComponent implements OnInit, OnDestroy {
     this.showQuestionModal = false;
     this.questionText = '';
   }
+
+  // Método para alternar la grabación de voz y reconocimiento de voz
+  toggleRecording(): void {
+    if (this.isRecording) {
+      // Detener grabación
+      this.isRecording = false;
+      this.isProcessingAudio = true;
+      if (this.recognition) {
+        this.recognition.stop();
+      }
+    } else {
+      // Iniciar grabación
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert('El reconocimiento de voz no es compatible con este navegador. Prueba en Chrome.');
+        return;
+      }
+      this.recognition = new SpeechRecognition();
+      this.recognition.lang = 'es-ES';
+      this.recognition.interimResults = false;
+      this.recognition.maxAlternatives = 1;
+      this.isRecording = true;
+      this.isProcessingAudio = false;
+      this.questionText = '';
+
+      this.recognition.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        this.questionText = transcript;
+        this.isProcessingAudio = false;
+        this.isRecording = false;
+        this.cdr.detectChanges();
+      };
+      this.recognition.onerror = (event: any) => {
+        this.isProcessingAudio = false;
+        this.isRecording = false;
+        this.questionText = '';
+        alert('Error en el reconocimiento de voz: ' + event.error);
+        this.cdr.detectChanges();
+      };
+      this.recognition.onend = () => {
+        this.isProcessingAudio = false;
+        this.isRecording = false;
+        this.cdr.detectChanges();
+      };
+      this.recognition.start();
+    }
+  }
 }
